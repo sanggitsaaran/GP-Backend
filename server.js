@@ -53,6 +53,13 @@ if (!fs.existsSync(uploadDir)) {
 // Static folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Add this BEFORE your routes
+app.use((req, res, next) => {
+  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.url}`);
+  console.log('📤 Request body:', req.body);
+  next();
+});
+
 // Routes
 app.get('/', (req, res) => {
   res.send('GramPulse API is running...');
@@ -85,6 +92,6 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
