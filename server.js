@@ -41,8 +41,22 @@ app.use('/api/', limiter);
 // Body parser middleware
 app.use(express.json());
 
-// Enable CORS
-app.use(cors());
+// Enable CORS with specific configuration
+app.use(cors({
+  origin: '*', // Allow all origins for development
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Simple health check for connectivity diagnostics
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'OK',
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // File upload directory setup
 const uploadDir = path.join(__dirname, 'uploads');
