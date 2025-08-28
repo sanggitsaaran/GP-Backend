@@ -1,7 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { generateOTP, getOTPExpiryTime } = require('../utils/otpUtils');
+
+// OTP Utility Functions
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+const getOTPExpiryTime = () => {
+  return new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+};
 
 // Generate JWT Token
 const generateToken = (userId) => {

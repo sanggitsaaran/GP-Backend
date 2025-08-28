@@ -79,20 +79,11 @@ app.get('/', (req, res) => {
   res.send('GramPulse API is running...');
 });
 
-// Define Auth Routes
+// Authentication Routes
 app.use('/api/auth', require('./src/routes/authRoutes'));
 
-// Define Report Routes
-app.use('/api/reports', require('./src/routes/reportRoutes'));
-
-// Define User Routes
-app.use('/api/users', require('./src/routes/userRoutes'));
-
-// Define Volunteer Routes
-app.use('/api/volunteers', require('./src/routes/volunteerRoutes'));
-
-// Define Officer Routes
-app.use('/api/officers', require('./src/routes/officerRoutes'));
+// Incident Management Routes  
+app.use('/api/incidents', require('./src/routes/incidents'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
