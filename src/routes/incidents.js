@@ -56,7 +56,7 @@ router.post('/', auth, async (req, res) => {
 
     // Create incident
     const incident = new Incident({
-      user: req.user.userId,
+      user: req.user._id,
       categoryId,
       title,
       description,
@@ -91,7 +91,7 @@ router.get('/my', auth, async (req, res) => {
   try {
     console.log('🌐', new Date().toISOString(), '- GET /api/incidents/my');
     
-    const incidents = await Incident.find({ user: req.user.userId })
+    const incidents = await Incident.find({ user: req.user._id })
       .sort({ createdAt: -1 })
       .populate('user', 'name phone');
 
@@ -108,32 +108,27 @@ router.get('/my', auth, async (req, res) => {
   }
 });
 
-// Get nearby incidents
+// Get nearby incidents (now shows ALL incidents for citizen dashboard)
 router.get('/nearby', auth, async (req, res) => {
   try {
     console.log('🌐', new Date().toISOString(), '- GET /api/incidents/nearby');
+    console.log('📍 Fetching ALL incidents for citizen dashboard (not filtering by location)');
     
-    const { lat, lng, radius = 5000 } = req.query; // radius in meters
-    
-    if (!lat || !lng) {
-      return res.status(400).json({
-        success: false,
-        message: 'Latitude and longitude are required'
-      });
-    }
-
-    // Simple distance calculation (for basic functionality)
-    // In production, use MongoDB's geospatial queries
+    // For citizen dashboard, show ALL incidents - not filtered by location
+    // This ensures "Nearby Issues" shows all the issues that appear in statistics
     const incidents = await Incident.find({
       status: { $nin: ['CLOSED', 'CANCELLED', 'SPAM'] }
     })
       .sort({ createdAt: -1 })
-      .limit(50)
-      .populate('user', 'name');
+      .populate('user', 'name phone')
+      .populate('categoryId', 'name');
+
+    console.log(`📊 Found ${incidents.length} incidents for nearby display`);
 
     res.json({
       success: true,
-      data: incidents
+      data: incidents,
+      message: `Found ${incidents.length} incidents`
     });
   } catch (error) {
     console.error('❌ Error fetching nearby incidents:', error);
@@ -153,7 +148,7 @@ router.get('/statistics', auth, async (req, res) => {
       Incident.countDocuments({ status: 'NEW' }),
       Incident.countDocuments({ status: 'IN_PROGRESS' }),
       Incident.countDocuments({ status: 'RESOLVED' }),
-      Incident.countDocuments({ user: req.user.userId })
+      Incident.countDocuments({ user: req.user._id })
     ]);
 
     res.json({

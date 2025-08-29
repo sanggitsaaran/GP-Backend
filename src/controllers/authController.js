@@ -66,6 +66,7 @@ exports.sendOTPController = async (req, res) => {
       success: true,
       message: 'OTP sent successfully',
       data: null,
+      otp: otp, // For testing only - remove in production
     });
   } catch (error) {
     console.error(error);

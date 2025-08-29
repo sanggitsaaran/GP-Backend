@@ -82,6 +82,9 @@ app.get('/', (req, res) => {
 // Authentication Routes
 app.use('/api/auth', require('./src/routes/authRoutes'));
 
+// Profile Management Routes
+app.use('/api/profile', require('./src/routes/profile'));
+
 // Incident Management Routes  
 app.use('/api/incidents', require('./src/routes/incidents'));
 
