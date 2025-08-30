@@ -94,6 +94,14 @@ app.use('/api/incidents', require('./src/routes/incidents'));
 // Officer Dashboard Routes
 app.use('/api/officer', require('./src/routes/officer'));
 
+// Escalation Management Routes
+// TODO: Fix Officer model dependency
+// app.use('/api/officer/escalation', require('./src/routes/escalation'));
+
+// Government Structure Routes
+// TODO: Fix Officer model dependency
+// app.use('/api/officer/government', require('./src/routes/government'));
+
 // Department Routes
 app.use('/api/departments', require('./src/routes/departments'));
 

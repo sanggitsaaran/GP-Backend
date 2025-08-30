@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Category = require('./src/models/Category');
+const Category = require('../src/models/Category');
 require('dotenv').config();
 
 // Connect to MongoDB
