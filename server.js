@@ -82,11 +82,20 @@ app.get('/', (req, res) => {
 // Authentication Routes
 app.use('/api/auth', require('./src/routes/authRoutes'));
 
+// Officer Authentication Routes
+app.use('/api/officer-auth', require('./src/routes/officerAuth'));
+
 // Profile Management Routes
 app.use('/api/profile', require('./src/routes/profile'));
 
 // Incident Management Routes  
 app.use('/api/incidents', require('./src/routes/incidents'));
+
+// Officer Dashboard Routes
+app.use('/api/officer', require('./src/routes/officer'));
+
+// Department Routes
+app.use('/api/departments', require('./src/routes/departments'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
